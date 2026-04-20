@@ -1,0 +1,22 @@
+# File: dbt_models/models/staging/sources.yml
+#
+# Tells dbt where the raw tables live in BigQuery.
+# Referenced in SQL models as {{ source('fao_trade_raw', 'table_name') }}
+
+version: 2
+
+sources:
+  - name: fao_trade_raw
+    project: seafood-trade-intelligence
+    dataset: fao_trade_raw
+    description: >
+      Raw FAO Global Aquatic Trade Statistics, loaded via Python ingestion pipeline.
+    tables:
+      - name: raw_trade_value
+        description: "Annual seafood trade values in USD thousands — 200+ countries, 1976–2023"
+      - name: raw_trade_quantity
+        description: "Annual seafood trade volumes in metric tonnes — 200+ countries, 1976–2023"
+      - name: ref_commodity
+        description: "ISSCFC commodity code lookup — maps FAO codes to product names"
+      - name: ref_country
+        description: "UN country code lookup — maps numeric codes to country names"

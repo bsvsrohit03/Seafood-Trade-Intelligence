@@ -1,0 +1,68 @@
+# File: .github/workflows/weekly_pipeline.yml
+#
+# WHAT THIS DOES:
+#   Every Monday at 6am UTC, GitHub runs this workflow which:
+#   1. Checks out your code
+#   2. Installs Python dependencies
+#   3. Authenticates with Google Cloud using your service account key
+#   4. Runs the ingestion script to refresh BigQuery tables
+#   5. Runs dbt to rebuild all mart tables
+#   6. Runs dbt tests to verify data quality
+#
+#   You can also trigger it manually from the GitHub Actions tab.
+
+name: Weekly FAO Data Pipeline
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'    # Every Monday at 06:00 UTC
+  workflow_dispatch:         # Also allows manual trigger from GitHub UI
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install \
+            google-cloud-bigquery \
+            pandas \
+            dbt-bigquery \
+            python-dotenv \
+            db-dtypes \
+            pyarrow
+
+      - name: Authenticate with Google Cloud
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcp_credentials.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp_credentials.json" >> $GITHUB_ENV
+          echo "GOOGLE_CLOUD_PROJECT=seafood-trade-intelligence"           >> $GITHUB_ENV
+          echo "BQ_DATASET_RAW=fao_trade_raw"                             >> $GITHUB_ENV
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}"       >> $GITHUB_ENV
+
+      - name: Run ingestion
+        run: python ingestion/load_fao_data.py
+        # continue-on-error: true  # uncomment if you want the pipeline to proceed even if FAO is unavailable
+
+      - name: Run dbt models
+        run: |
+          cd dbt_models
+          dbt run --profiles-dir .
+
+      - name: Run dbt tests
+        run: |
+          cd dbt_models
+          dbt test --profiles-dir .
+
+      - name: Log completion
+        if: success()
+        run: echo "✅ Pipeline completed successfully at $(date)"

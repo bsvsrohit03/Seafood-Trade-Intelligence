@@ -1,0 +1,23 @@
+# File: dbt_models/dbt_project.yml
+#
+# Main config file for the dbt project.
+# Tells dbt where to find models, what dataset to write to, etc.
+
+name: seafood_trade
+version: '1.0.0'
+config-version: 2
+
+profile: seafood_trade   # must match the name in ~/.dbt/profiles.yml
+
+model-paths: ["models"]
+test-paths:  ["tests"]
+target-path: "target"
+
+models:
+  seafood_trade:
+    staging:
+      +schema: staging        # writes to fao_trade_marts_staging
+      +materialized: view     # views = no storage cost, always fresh
+    marts:
+      +schema: marts          # writes to fao_trade_marts_marts
+      +materialized: table    # tables = pre-computed, fast to query

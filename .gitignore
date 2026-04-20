@@ -1,0 +1,25 @@
+# Secrets — never push these
+.env
+credentials.json
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Raw data (too large for GitHub)
+data/raw/
+
+# dbt internals
+.dbt/
+target/
+dbt_packages/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
