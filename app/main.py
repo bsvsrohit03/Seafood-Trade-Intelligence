@@ -113,7 +113,7 @@ st.sidebar.header("💡 Example questions")
 examples = [
     "Which 5 countries exported the most shrimp by value in 2022?",
     "How has the global price per tonne of salmon changed since 2000?",
-    "Which continent imported the most seafood in 2020?",
+    "Select which continent imported the most seafood in 2020?",
     "Show me the top 10 commodities by total export value in 2023",
     "Which countries had the biggest increase in tuna exports between 2010 and 2022?",
     "What is India's top exported seafood commodity by volume?",
