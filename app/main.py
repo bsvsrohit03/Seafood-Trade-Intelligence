@@ -64,10 +64,6 @@ RULES:
 
 
 def ask_claude_for_sql(user_question: str) -> str:
-    """
-    Send the user's question to Claude and get back a BigQuery SQL query.
-    Claude knows the schema from SCHEMA_CONTEXT above.
-    """
     response = claude_client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=1000,
@@ -75,11 +71,18 @@ def ask_claude_for_sql(user_question: str) -> str:
         messages=[
             {
                 "role": "user",
-                "content": f"Write a BigQuery SQL query to answer: {user_question}",
+                "content": f"Write a BigQuery SQL query to answer: {user_question}"
+            },
+            {
+                "role": "assistant",
+                "content": "SELECT"
             }
         ],
     )
-    return response.content[0].text.strip()
+    sql = "SELECT" + response.content[0].text.strip()
+    # Strip any accidental markdown
+    sql = sql.replace("```sql", "").replace("```", "").strip()
+    return sql
 
 
 def run_bigquery_sql(sql: str) -> pd.DataFrame:
