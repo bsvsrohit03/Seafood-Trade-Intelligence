@@ -26,8 +26,9 @@ if "gcp_service_account" in st.secrets:
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f.name
 
 bq_client = bigquery.Client(project=os.getenv("GOOGLE_CLOUD_PROJECT"))
-claude_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-PROJECT      = os.getenv("GOOGLE_CLOUD_PROJECT")
+anthropic_key = st.secrets.get("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_API_KEY")
+claude_client = Anthropic(api_key=anthropic_key)
+PROJECT = st.secrets.get("GOOGLE_CLOUD_PROJECT") or os.getenv("GOOGLE_CLOUD_PROJECT")
 
 # ── DATABASE SCHEMA CONTEXT ───────────────────────────────────────────────────
 # Sent to Claude so it knows the structure of your database.
