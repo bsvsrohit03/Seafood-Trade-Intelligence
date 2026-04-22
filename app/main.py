@@ -44,7 +44,6 @@ COLUMNS:
   trade_flow_label           STRING    'Export', 'Import', 'Reexport' (human-readable)
   country_name               STRING    Name of the reporting country (e.g. 'India', 'Norway')
   country_iso3               STRING    ISO3 country code (e.g. 'IND', 'NOR')
-  continent                  STRING    Continent grouping
   commodity_name             STRING    Product name (e.g. 'Shrimps, frozen', 'Salmon, fresh')
   commodity_fao_code         STRING    FAO ISSCFC commodity code
   isscaap_group              STRING    Broad species group number
