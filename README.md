@@ -9,8 +9,8 @@ An end-to-end data pipeline and AI-powered query interface for global seafood tr
 
 ## 🚀 Live Demo
 
-> 📹 [Loom recording — add link here once recorded]
-> 🌐 [Streamlit app — add link here once deployed]
+> ![Seafood Trade Intelligence Dashboard](screenshots/seafood_app_demo_1.png)
+> ![Seafood Trade Intelligence Dashboard](screenshots/seafood_app_demo_1.png)
 
 ---
 
