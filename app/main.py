@@ -71,16 +71,17 @@ def ask_claude_for_sql(user_question: str) -> str:
         messages=[
             {
                 "role": "user",
-                "content": f"Write a BigQuery SQL query to answer: {user_question}"
-            },
-            {
-                "role": "assistant",
-                "content": "SELECT"
+                "content": (
+                    f"Write a BigQuery SQL query to answer this question: {user_question}\n\n"
+                    "IMPORTANT: Your entire response must be only the SQL query itself. "
+                    "Do not include any explanation, commentary, markdown formatting, "
+                    "or code blocks. Start directly with SELECT or WITH."
+                )
             }
         ],
     )
-    sql = "SELECT" + response.content[0].text.strip()
-    # Strip any accidental markdown
+    sql = response.content[0].text.strip()
+    # Strip any accidental markdown backticks
     sql = sql.replace("```sql", "").replace("```", "").strip()
     return sql
 
