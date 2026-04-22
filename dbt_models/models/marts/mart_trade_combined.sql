@@ -45,9 +45,8 @@ combined AS (
 with_country AS (
     SELECT
         c.*,
-        co.Name_En         AS country_name,
-        co.ISO3_Code       AS country_iso3,
-        co.Continent_Group AS continent
+        co.Name_En   AS country_name,
+        co.ISO3_Code AS country_iso3
     FROM combined c
     LEFT JOIN {{ source('fao_trade_raw', 'ref_country') }} co
         ON c.country_un_code = co.UN_Code

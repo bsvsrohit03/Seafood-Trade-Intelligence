@@ -7,7 +7,6 @@
 SELECT
     country_name,
     country_iso3,
-    continent,
     commodity_name,
     isscaap_group,
     trade_year,
@@ -24,4 +23,4 @@ WHERE trade_flow_code  = 'E'             -- exports only
   AND commodity_name   IS NOT NULL
   AND data_quality_flag IN ('A', 'E')    -- official + estimated, no near-zero
 
-GROUP BY 1, 2, 3, 4, 5, 6, 7
+GROUP BY 1, 2, 3, 4, 5, 6
