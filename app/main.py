@@ -8,6 +8,8 @@
 # RUN WITH: streamlit run app/main.py
 
 import os
+import json
+import tempfile
 import streamlit as st
 import pandas as pd
 from google.cloud import bigquery
@@ -15,9 +17,15 @@ from anthropic import Anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
-
 # ── INITIALISE CLIENTS ────────────────────────────────────────────────────────
-bq_client    = bigquery.Client(project=os.getenv("GOOGLE_CLOUD_PROJECT"))
+# Write GCP credentials from Streamlit secrets to a temp file
+if "gcp_service_account" in st.secrets:
+    creds_dict = dict(st.secrets["gcp_service_account"])
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+        json.dump(creds_dict, f)
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = f.name
+
+bq_client = bigquery.Client(project=os.getenv("GOOGLE_CLOUD_PROJECT"))
 claude_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 PROJECT      = os.getenv("GOOGLE_CLOUD_PROJECT")
 
@@ -61,7 +69,7 @@ def ask_claude_for_sql(user_question: str) -> str:
     Claude knows the schema from SCHEMA_CONTEXT above.
     """
     response = claude_client.messages.create(
-        model="claude-sonnet-4-20250514",
+        model="claude-sonnet-4-6",
         max_tokens=1000,
         system=SCHEMA_CONTEXT,
         messages=[
