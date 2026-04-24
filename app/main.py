@@ -66,7 +66,7 @@ RULES:
 def ask_claude_for_sql(user_question: str) -> str:
     response = claude_client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=1000,
+        max_tokens=2000,
         system=SCHEMA_CONTEXT,
         messages=[
             {
