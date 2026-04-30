@@ -8,7 +8,7 @@ version: 2
 models:
   - name: mart_trade_combined
     description: "Main analysis table: joined value, quantity, country names, commodity names"
-    columns:
+columns:
       - name: trade_year
         description: "Year of the trade record"
         tests:
@@ -17,9 +17,8 @@ models:
         description: "E=Export, I=Import, R=Reexport"
         tests:
           - not_null
-      - accepted_values:
-          arguments:
-            values: ['E', 'I', 'R']
+          - accepted_values:
+              values: ['E', 'I', 'R']
       - name: value_usd
         description: "Trade value in full USD"
         tests:
