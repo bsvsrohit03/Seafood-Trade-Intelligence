@@ -7,29 +7,24 @@ version: 2
 
 models:
   - name: mart_trade_combined
-    description: >
-      Main analysis table: joined value, quantity, country names, and commodity names
-      with derived unit_price_usd_per_tonne metric. Source for all dashboards.
+    description: "Main analysis table: joined value, quantity, country names, commodity names"
     columns:
       - name: trade_year
         description: "Year of the trade record"
         tests:
           - not_null
-- name: trade_flow_code
+      - name: trade_flow_code
         description: "E=Export, I=Import, R=Reexport"
         tests:
           - not_null
           - accepted_values:
-              values:
-                - 'E'
-                - 'I'
-                - 'R'
+              values: ['E', 'I', 'R']
       - name: value_usd
         description: "Trade value in full USD"
         tests:
           - not_null
       - name: unit_price_usd_per_tonne
-        description: "Derived: value_usd / quantity_tonnes. NULL when quantity is zero."
+        description: "Derived metric: value divided by quantity. NULL when quantity is zero."
 
   - name: mart_top_exporters
     description: "Aggregated export statistics by country, commodity, and year"
@@ -42,9 +37,7 @@ models:
           - not_null
 
   - name: mart_price_trends
-    description: >
-      Global average price per tonne by commodity and year.
-      Used for price volatility charts in Power BI.
+    description: "Global average price per tonne by commodity and year"
     columns:
       - name: trade_year
         tests:
@@ -52,5 +45,3 @@ models:
       - name: commodity_name
         tests:
           - not_null
-      - name: global_avg_price_usd_per_tonne
-        description: "Weighted average: SUM(value_usd) / SUM(quantity_tonnes)"
