@@ -20,7 +20,6 @@ models:
         tests:
           - not_null
           - - accepted_values:
-               arguments:
                values: ['E', 'I', 'R']
       - name: value_usd
         description: "Trade value in full USD"
