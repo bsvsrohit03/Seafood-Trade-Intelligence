@@ -15,12 +15,15 @@ models:
         description: "Year of the trade record"
         tests:
           - not_null
-      - name: trade_flow_code
+- name: trade_flow_code
         description: "E=Export, I=Import, R=Reexport"
         tests:
           - not_null
-          - - accepted_values:
-               values: ['E', 'I', 'R']
+          - accepted_values:
+              values:
+                - 'E'
+                - 'I'
+                - 'R'
       - name: value_usd
         description: "Trade value in full USD"
         tests:
