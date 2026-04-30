@@ -7,8 +7,8 @@ version: 2
 
 models:
   - name: mart_trade_combined
-    description: "Main analysis table: joined value, quantity, country names, commodity names"
-columns:
+    description: "Main analysis table: joined value, quantity, country names, commodity names with derived unit_price_usd_per_tonne metric."
+    columns:
       - name: trade_year
         description: "Year of the trade record"
         tests:
@@ -37,7 +37,7 @@ columns:
           - not_null
 
   - name: mart_price_trends
-    description: "Global average price per tonne by commodity and year"
+    description: "Global average price per tonne by commodity and year."
     columns:
       - name: trade_year
         tests:
@@ -45,3 +45,5 @@ columns:
       - name: commodity_name
         tests:
           - not_null
+      - name: global_avg_price_usd_per_tonne
+        description: "Weighted average: SUM(value_usd) / SUM(quantity_tonnes)"
