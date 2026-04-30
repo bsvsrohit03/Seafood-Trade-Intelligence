@@ -1,0 +1,12 @@
+seafood_trade:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: seafood-trade-intelligence
+      dataset: fao_trade_marts
+      location: US
+      threads: 4
+      timeout_seconds: 300
+      keyfile: /tmp/gcp_credentials.json
